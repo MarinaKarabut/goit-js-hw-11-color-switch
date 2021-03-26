@@ -7,27 +7,32 @@ const colors = [
     '#795548',
   ];
 
-  const NOTIFICATION_DELAY = 1000;
-  let intervalId = null;
+const NOTIFICATION_DELAY = 1000;
+let intervalId = null;
+let isActive = false;
 
-  const startBtn = document.querySelector('[data-action="start"]')
-  const stopBtn = document.querySelector('[data-action="stop"]')
+const startBtn = document.querySelector('[data-action="start"]')
+const stopBtn = document.querySelector('[data-action="stop"]')
   
 
-  startBtn.addEventListener('click', onStartColorChanges)
-  stopBtn.addEventListener('click', onStoptColorChanges)
+startBtn.addEventListener('click', onStartColorChanges)
+stopBtn.addEventListener('click', onStoptColorChanges)
   
-  function onStartColorChanges(){
-    intervalId = setInterval( () => {
-      const color = randomIntegerFromInterval(0, colors.length -1)
-      document.body.style.backgroundColor = colors[color]
-    }, NOTIFICATION_DELAY);
-    
+function onStartColorChanges() {
+  if (isActive) {
+    return;
   }
+  isActive = true;
+  intervalId = setInterval(() => {
+    const color = randomIntegerFromInterval(0, colors.length - 1)
+    document.body.style.backgroundColor = colors[color]
+  }, NOTIFICATION_DELAY);
+}
+   
   
   function onStoptColorChanges(){
     clearInterval(intervalId)
-    document.body.style.backgroundColor = ''
+    isActive = false;
   }
 
   const randomIntegerFromInterval = (min, max) => {
